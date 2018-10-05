@@ -1,11 +1,9 @@
 #ifndef __JJC__CORE__H__
 #define __JJC__CORE__H__
 
+#include <vector>
 #include <stdint.h>
-
-typedef int32_t   reg_t;
-typedef uint8_t   byte_t;
-typedef bool      flag_t;
+#include "constants.h" // typedefs and opcodes
 
 #define SET true
 #define RESET false
@@ -30,14 +28,18 @@ private:
     reg_t r_ProgramBank;
     reg_t r_ProgramCounter;
     reg_t r_ProcessorStatus;
-    reg_t r_StackPointer;
+    reg_t r_StackPointer = 0x100; // at least in 6502 mode, stack always starts here
     reg_t r_XIndex;
     reg_t r_YIndex;
 
-public:
-    reg_t  getReg(RegId id);
-    flag_t getFlag(FlagId id);
+    std::vector<byte_t> memory;
+    void pushByte(byte_t b);
 
+public:
+    reg_t getReg(RegId id);
+    bool  getFlag(FlagId id);
+    void  execute6502_instruction(void);
 };
 
 #endif // __JJC__CORE__H__
+// i never finish anythi

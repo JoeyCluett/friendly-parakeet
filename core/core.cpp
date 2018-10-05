@@ -3,6 +3,11 @@
 
 #include "core.h"
 
+void core_65C816::pushByte(byte_t b) {
+    this->memory[this->r_StackPointer] = b;
+    this->r_StackPointer++;
+}
+
 reg_t core_65C816::getReg(RegId id) {
     switch(id) {
         case RegId::A:
@@ -53,10 +58,10 @@ reg_t core_65C816::getReg(RegId id) {
 }
 
 // extract a specific bit from the processor status register
-flag_t core_65C816::getFlag(FlagId id) {
+bool core_65C816::getFlag(FlagId id) {
     switch(id) {
         case FlagId::b:
-            return (1 << 4) & this->r_ProcessorStatus ? SET : RESET;
+            return ((1 << 4) & this->r_ProcessorStatus) ? SET : RESET;
         case FlagId::c:
             return (1 << 0) & this->r_ProcessorStatus ? SET : RESET;
         case FlagId::d:
